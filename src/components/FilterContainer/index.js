@@ -14,7 +14,7 @@ const FilterContainer = (LHS) => {
 
     const [filterState, setFilterState] = useState({
         filterList: [],
-        available
+        currFilterIndex: 0,
     });
     const [filterList, setFilterList] = useState([]);
     const [currFilterIndex, setCurrFilterIndex] = useState(0);
