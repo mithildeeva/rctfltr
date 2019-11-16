@@ -9,33 +9,69 @@ export const initialState = {
         'account': {
             label: 'Account',
             operators: [
-                'Contains',
-                'Not Contains',
+                {
+                    id: 'contains',
+                    label: 'Contains',
+                },
+                {
+                    id: 'not_contains',
+                    label: 'Not Contains',
+                },
             ],
         },
         'campaign_name': {
             label: 'Campaign Name',
             operators: [
-                'Starts with',
-                'Contains',
-                'Not Contains',
+                {
+                    id: 'starts_with',
+                    label: 'Starts with',
+                },
+                {
+                    id: 'contains',
+                    label: 'Contains',
+                },
+                {
+                    id: 'not_contains',
+                    label: 'Not Contains',
+                },
             ],
         },
         'country': {
             label: 'Country',
             operators: [
-                'Contains',
-                'Not Contains',
+                {
+                    id: 'contains',
+                    label: 'Contains',
+                },
+                {
+                    id: 'not_contains',
+                    label: 'Not Contains',
+                },
             ],
         },
         'revenue': {
             label: 'Revenue',
             operators: [
-                '>',
-                '<',
-                '>=',
-                '=',
-                '!=',
+                {
+                    id: '>',
+                    label: '>',
+                },
+                {
+                    id: '<',
+                    label: '<',
+                },
+                {
+                    id: '>=',
+                    label: '>=',
+                },
+                {
+                    id: '=',
+                    label: '=',
+                },
+                {
+                    id: '!=',
+                    label: '!=',
+                },
             ],
         },
     },
@@ -4053,6 +4089,7 @@ export const initialState = {
             },
         ],
         FREE_FORM_VALUE,
+        //todo: remove all repeating ids
         [
             {
                 'label': "Israel",

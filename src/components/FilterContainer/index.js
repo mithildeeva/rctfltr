@@ -8,68 +8,38 @@ import {
     DivFilter
 } from './style';
 import RevenueFilter from '../RevenueFilter/index'
+import {selectFilterList} from "./selector";
+import Filter from "../Filter/index";
 
 
-const FilterContainer = (LHS) => {
+const FilterContainer = () => {
 
-    const [filterState, setFilterState] = useState({
-        filterList: [],
-        currFilterIndex: 0,
-    });
-    const [filterList, setFilterList] = useState([]);
-    const [currFilterIndex, setCurrFilterIndex] = useState(0);
-    const [availableLhs, setAvailableLhs] = useState(LHS);
-    const [availableOperators, setAvailableOperators] = useState(LHS.map((item) => ({ [item.id] : item.operators })));
-    const [availableValues, setAvailableValues] = useState(LHS.map((item) => ({ [item.id] : item.values })));
+    const filterList = selectFilterList();
+
+    const [emptyFilter, setEmptyFilter] = useState(null);
 
     const invisibleInput = (<input type='text' className='invisible-element'/>);
 
     const addNewFilter = () => {
-        let newFilterList = filterList;
-        newFilterList.push({
+        setEmptyFilter({
             lhs: null,
             operator: null,
             rhs: null,
-        });
-        setFilterList(newFilterList);
+        })
     };
 
     const removeFilter = index => {
-        const newFilterList = filterList.filter((filter, currIndex) => currIndex !== index);
-        setFilterList(newFilterList);
+        // todo: dispatch remove filter
     };
 
-    const hasEmptyFilter = () =>
-        undefined !== filterList.find((filter) =>
-            filter.lhs === null || filter.value === null || filter.rhs === null
-        );
+    const removeEmptyFilter = () => {
+        setEmptyFilter(null);
+    };
+
+    const hasEmptyFilter = () => emptyFilter !== null;
 
     const onFocusChange = index => {
-        if (currFilterIndex !== index) setCurrFilterIndex(index);
-    };
-
-
-    const getFilterJSX = (filter, index) => {
-        switch (filter.lhs.id ? filter.lhs.id : 'default') {
-            case 'account':
-                return (
-                    <MultiSelectDropdown index={index} onFocus={onFocusChange} selected={filter.rhs} available={availableValues[filter.rhs.id]} />
-                );
-            case 'country':
-                return (
-                    <MultiSelectDropdown index={index} onFocus={onFocusChange} selected={filter.rhs} available={availableValues[filter.rhs.id]} />
-                );
-            case 'campaign_name':
-                return (
-                    <input type='text' value={availableValues[filter.rhs.label]} />
-                );
-            case 'revenue':
-                return (
-                    <RevenueFilter index={index} onFocus={onFocusChange} value={availableValues[filter.rhs.label]} />
-                );
-            default:
-                return invisibleInput;
-        }
+        console.log(`focus changed to ${index}`);
     };
 
     const getCloseButton = index => {
@@ -78,6 +48,18 @@ const FilterContainer = (LHS) => {
             <button className='btn-filter-remove' onClick={() => { removeFilter(index) }} key={`action-${index}`}>
                 <i className="material-icons">close</i>
             </button>
+        );
+    };
+
+    const getEmptyFilterJSX = () => {
+        if (emptyFilter === null) return ('');
+        return (
+            <DivFilter>
+                <Filter index={null} filterData{emptyFilter} onFocusChange={onFocusChange}/>
+                <button className='btn-filter-remove' onClick={() => { removeEmptyFilter() }} key={`remove-empty-filter`}>
+                    <i className="material-icons">close</i>
+                </button>
+            </DivFilter>
         );
     };
 
@@ -94,14 +76,12 @@ const FilterContainer = (LHS) => {
                         {
                             filterList.map((filter, index) => (
                                 <DivFilter>
-                                    <SingleSelectDropdown index={index} selected={filter.lhs} availableValues={availableLhs} onChange={lhsChanged} onFocus={onFocusChange} />
-                                    {filter.rhs.id ?
-                                        <SingleSelectDropdown index={index} selected={filter.operator} availableValues={availableOperators[filter.rhs.id]}  onFocus={onFocusChange} />
-                                        : invisibleInput}
-                                    {getFilterJSX(filter, index)}
+
+                                    <Filter index={index} filterData={filter} onFocusChange={onFocusChange}/>
                                     {getCloseButton(index)}
                                 </DivFilter>
                             ))
+                            (getEmptyFilterJSX())
                         }
                     </DivFilters>
                 </DivFilterSection>
