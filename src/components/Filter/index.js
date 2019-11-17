@@ -1,37 +1,113 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {selectAvailableLhs, selectAvailableOperator, selectAvailableRhs, selectSelectedRhs} from "./selector";
+import {UPDATE_FILTER_IN_LIST} from "../../constants";
 
-const Filter = ({index, filter, onFocusChange}) => {
+const Filter = ({index = null, filterProp = {
+    lhs: null,
+    operator: null,
+    rhs: null,
+}, onFocusChange}) => {
 
-    const getFilterJSX = (filter, index) => {
-        switch (filter.lhs.id ? filter.lhs.id : 'default') {
+    const [filterState, setFilterState] = useState(filterProp);
+    const dispatch = useDispatch();
+
+
+    const shouldDispatchFilterListUpdate = filter => {
+        return filter.lhs !== null
+            && filter.operator !== null
+            && filter.rhs !== null;
+    };
+
+    const lhsChanged = newLhs => {
+        let newFilter = Object.assign({}, filterState, {lhs: newLhs});
+        processUpdate(newFilter);
+    };
+
+    const operatorChanged = newOperator => {
+        let newFilter = Object.assign({}, filterState, {operator: newOperator});
+        processUpdate(newFilter);
+    };
+
+    const rhsChanged = newRhs => {
+        let newFilter = Object.assign({}, filterState, {rhs: newRhs});
+        processUpdate(newFilter);
+    };
+
+    const processUpdate = newFilter => {
+        setFilterState(newFilter);
+
+        // dispatch action to update filter list
+        if (shouldDispatchFilterListUpdate(newFilter)) {
+            dispatch({
+                type: UPDATE_FILTER_IN_LIST,
+                payload: {
+                    filter: newFilter,
+                    index
+                },
+            });
+        }
+    };
+
+    const getLhsDropdown = () => {
+        return (
+            <SingleSelectDropdown
+                selected={filterState.lhs}
+                availableValues={selectAvailableLhs()}
+                onChange={lhsChanged}
+            />
+        );
+    };
+
+    const getOperatorDropdown = () => {
+        if (filterState.lhs === null) return ('');
+
+        return (
+            <SingleSelectDropdown
+                selected={filterState.operator}
+                availableValues={selectAvailableOperator(filterState.lhs.id)}
+                onChange={operatorChanged}
+            />
+        );
+    };
+
+    const getRhsJSX = () => {
+        if (filterState.operator === null) return ('');
+
+        switch (filterState.lhs.id) {
             case 'account':
-                return (
-                    <MultiSelectDropdown index={index} onFocus={onFocusChange} selected={filter.rhs} available={availableValues[filter.rhs.id]} />
-                );
             case 'country':
                 return (
-                    <MultiSelectDropdown index={index} onFocus={onFocusChange} selected={filter.rhs} available={availableValues[filter.rhs.id]} />
+                    <MultiSelectDropDown
+                        selected={selectSelectedRhs(index)}
+                        available={selectAvailableRhs(filterState.lhs.id)}
+                        onChange={rhsChanged}
+                    />
                 );
             case 'campaign_name':
                 return (
-                    <input type='text' value={availableValues[filter.rhs.label]} />
+                    <CampaignFilter
+                        selected={selectSelectedRhs(index)}
+                        onChange={rhsChanged}
+                    />
                 );
             case 'revenue':
                 return (
-                    <RevenueFilter index={index} onFocus={onFocusChange} value={availableValues[filter.rhs.label]} />
+                    <CampaignFilter
+                        selected={selectSelectedRhs(index)}
+                        onChange={rhsChanged}
+                    />
                 );
             default:
-                return invisibleInput;
+                return ('');
         }
     };
 
     return (
         <div>
-            <SingleSelectDropdown index={index} selected={filter.lhs} availableValues={availableLhs} onChange={lhsChanged} onFocus={onFocusChange} />
-            {filter.rhs.id ?
-                <SingleSelectDropdown index={index} selected={filter.operator} availableValues={availableOperators[filter.rhs.id]}  onFocus={onFocusChange} />
-                : invisibleInput}
-            {getFilterJSX(filter, index)}
+            {getLhsDropdown()}
+            {getOperatorDropdown()}
+            {getRhsJSX()}
         </div>
     )
 };

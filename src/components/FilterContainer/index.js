@@ -7,9 +7,9 @@ import {
     DivFilters,
     DivFilter
 } from './style';
-import RevenueFilter from '../RevenueFilter/index'
 import {selectFilterList} from "./selector";
 import Filter from "../Filter/index";
+import {selectAvailableLhs} from "../Filter/selector";
 
 
 const FilterContainer = () => {
@@ -38,6 +38,10 @@ const FilterContainer = () => {
 
     const hasEmptyFilter = () => emptyFilter !== null;
 
+    const canAddFilter = () => {
+        return !hasEmptyFilter() && selectAvailableLhs().length !== 0;
+    };
+
     const onFocusChange = index => {
         console.log(`focus changed to ${index}`);
     };
@@ -55,7 +59,7 @@ const FilterContainer = () => {
         if (emptyFilter === null) return ('');
         return (
             <DivFilter>
-                <Filter index={null} filterData{emptyFilter} onFocusChange={onFocusChange}/>
+                <Filter index={null} filterData={emptyFilter} onFocusChange={onFocusChange}/>
                 <button className='btn-filter-remove' onClick={() => { removeEmptyFilter() }} key={`remove-empty-filter`}>
                     <i className="material-icons">close</i>
                 </button>
@@ -77,7 +81,12 @@ const FilterContainer = () => {
                             filterList.map((filter, index) => (
                                 <DivFilter>
 
-                                    <Filter index={index} filterData={filter} onFocusChange={onFocusChange}/>
+                                    <Filter
+                                        index={index}
+                                        filterData={filter}
+                                        onFocusChange={onFocusChange}
+                                        // key={`${filter.lhs.id}-${filter.operator.id}`}
+                                    />
                                     {getCloseButton(index)}
                                 </DivFilter>
                             ))
@@ -87,7 +96,7 @@ const FilterContainer = () => {
                 </DivFilterSection>
 
                 <div>
-                    <button onClick={addNewFilter} disabled={hasEmptyFilter}>
+                    <button onClick={addNewFilter} disabled={canAddFilter}>
                         <i className="material-icons btn-range-add-icon">add</i> Add
                     </button>
                 </div>

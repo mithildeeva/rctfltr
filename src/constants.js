@@ -1,5 +1,5 @@
 // actions start --------------
-export const SAMPLE_ACTION_NAME = 'SAMPLE_ACTION_NAME';
+export const UPDATE_FILTER_IN_LIST = 'UPDATE_FILTER_IN_LIST';
 
 // actions end ----------------
 export const FREE_FORM_VALUE = 'FREE_FORM_VALUE';
@@ -4229,7 +4229,7 @@ export const initialState = {
             },
             {
                 'label': "Canada",
-                'id': "1"
+                'id': "1_1"
             },
             {
                 'label': "Cape Verde",
@@ -4477,7 +4477,7 @@ export const initialState = {
             },
             {
                 'label': "Kazakhstan",
-                'id': "7 7"
+                'id': "7_7"
             },
             {
                 'label': "Kenya",

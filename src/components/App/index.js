@@ -8,7 +8,8 @@ const App = () => (
 
 
   <StyledWrapper>
-    <FilterContainer />
+    {/*<FilterContainer />*/}
+    <input onBlur={console.log}/>
   </StyledWrapper>
 );
 
