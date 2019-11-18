@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {selectAvailableLhs, selectAvailableOperator, selectAvailableRhs, selectSelectedRhs} from "./selector";
 import {UPDATE_FILTER_IN_LIST} from "../../constants";
+import SingleSelectDropdown from "../SingleSelectDropdown/index";
 
 const Filter = ({index = null, filterProp = {
     lhs: null,
@@ -52,6 +53,7 @@ const Filter = ({index = null, filterProp = {
     const getLhsDropdown = () => {
         return (
             <SingleSelectDropdown
+                placeholder='dimension/metric'
                 selected={filterState.lhs}
                 availableValues={selectAvailableLhs()}
                 onChange={lhsChanged}
@@ -64,6 +66,7 @@ const Filter = ({index = null, filterProp = {
 
         return (
             <SingleSelectDropdown
+                placeholder='operator'
                 selected={filterState.operator}
                 availableValues={selectAvailableOperator(filterState.lhs.id)}
                 onChange={operatorChanged}
