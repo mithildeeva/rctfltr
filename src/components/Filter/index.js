@@ -4,6 +4,8 @@ import {selectAvailableLhs, selectAvailableOperator, selectAvailableRhs, selectS
 import {UPDATE_FILTER_IN_LIST} from "../../constants";
 import SingleSelectDropdown from "../SingleSelectDropdown/index";
 import MultiSelectDropdown from "../MultiSelectDropdown/index";
+import TextInput from "../TextInput/index";
+import NumberInput from "../NumberInput/index";
 
 const Filter = ({index = null, filterProp = {
     lhs: null,
@@ -91,15 +93,17 @@ const Filter = ({index = null, filterProp = {
                 );
             case 'campaign_name':
                 return (
-                    <CampaignFilter
-                        selected={selectSelectedRhs(index)}
+                    <TextInput
+                        placeholder='Enter Campaign'
+                        value={selectSelectedRhs(index)}
                         onChange={rhsChanged}
                     />
                 );
             case 'revenue':
                 return (
-                    <RevenueFilter
-                        selected={selectSelectedRhs(index)}
+                    <NumberInput
+                        placeholder='Enter Number'
+                        value={selectSelectedRhs(index)}
                         onChange={rhsChanged}
                     />
                 );
