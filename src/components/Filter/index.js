@@ -3,6 +3,7 @@ import {useDispatch} from 'react-redux';
 import {selectAvailableLhs, selectAvailableOperator, selectAvailableRhs, selectSelectedRhs} from "./selector";
 import {UPDATE_FILTER_IN_LIST} from "../../constants";
 import SingleSelectDropdown from "../SingleSelectDropdown/index";
+import MultiSelectDropdown from "../MultiSelectDropdown/index";
 
 const Filter = ({index = null, filterProp = {
     lhs: null,
@@ -81,7 +82,8 @@ const Filter = ({index = null, filterProp = {
             case 'account':
             case 'country':
                 return (
-                    <MultiSelectDropDown
+                    <MultiSelectDropdown
+                        placeholder={filterState.lhs.label}
                         selected={selectSelectedRhs(index)}
                         available={selectAvailableRhs(filterState.lhs.id)}
                         onChange={rhsChanged}
@@ -96,7 +98,7 @@ const Filter = ({index = null, filterProp = {
                 );
             case 'revenue':
                 return (
-                    <CampaignFilter
+                    <RevenueFilter
                         selected={selectSelectedRhs(index)}
                         onChange={rhsChanged}
                     />

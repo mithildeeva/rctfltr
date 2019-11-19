@@ -1,0 +1,112 @@
+.multi-drop-down-parent{
+  width: 20%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+
+
+  .open-button{
+    display: flex;
+    border: 2px solid #DFDFDF;
+    border-radius: 0.28571rem;
+    cursor: pointer;
+
+    max-width: 150px;
+    padding: 5px;
+
+    span {
+      max-width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+    }
+    div {
+      margin-left: 10px;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    margin-top: 34px;
+    border: 2px solid #DFDFDF;
+    border-radius: 0.28571rem;
+    display: flex;
+    flex-direction: column;
+
+    .menu-header {
+      padding: 5px;
+      min-width: auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      width: 100%;
+
+      input:focus {
+        outline: none;
+      }
+
+      .search-input {
+        padding: 10px 10px 10px 10px;
+        height: 30px;
+
+        border: none;
+        border-bottom: 1px solid rgba(87, 95, 125, 0.2);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+    }
+
+    .menu-body {
+      position: relative;
+      margin: 7px 0;
+      margin-top: 0;
+      min-height: 150px;
+      max-height: 200px;
+      overflow: auto;
+
+      .menu-option {
+        padding: 2px 0;
+
+        .checkbox-label {
+          white-space: nowrap;
+          width: 80%;
+          overflow: hidden;
+          display: inline-block !important;
+          text-overflow: ellipsis;
+          padding-top: 1px;
+        }
+      }
+
+    }
+
+    .menu-footer {
+      padding: 7px 15px 3px;
+      display: flex;
+      border: none;
+      border-top: 1px solid rgba(87, 95, 125, 0.2);
+
+      button {
+        height: 38px;
+        width: 80px;
+        padding: 5px;
+        color: #fff;
+        border-color: transparent;
+        cursor: pointer;
+
+        border: 1px solid transparent;
+        border-radius: 0.35714rem;
+        font-weight: 600;
+        box-shadow: 0 2px 70px 0 rgba(0, 0, 0, 0.07)
+      }
+
+      .primary-btn {
+        margin-right: 5px;
+        background: #38C18B;
+      }
+
+      .secondary-btn {
+        background: #8F94A6;
+      }
+    }
+  }
+}
